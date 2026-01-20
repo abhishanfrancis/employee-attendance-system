@@ -19,6 +19,9 @@ A responsive web application built with Angular 17+ and TypeScript for managing 
 - **Routing:** Angular Router
 - **State Management:** RxJS Observables
 
+### Preview
+![Preview](preview.gif)
+g
 ## 📋 Prerequisites
 
 - Node.js (v16 or higher)
@@ -116,19 +119,3 @@ src/
 ## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📝 License
-
-This project is open source and available under the MIT License.
-
-## 👨‍💻 Author
-
-Your Name - [GitHub Profile](https://github.com/abhishanfrancis)
-
-## 📞 Contact
-
-For any queries, please reach out via GitHub issues.
-
----
-
-**Note:** This is a frontend-only application with mock data. For production use, connect to a real backend API.
