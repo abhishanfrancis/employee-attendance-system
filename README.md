@@ -1,27 +1,134 @@
-# EmployeeAttendanceSystem
+# Employee Attendance & Leave Management System
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.21.
+A responsive web application built with Angular 17+ and TypeScript for managing employee attendance and leave requests.
 
-## Development server
+## 🚀 Features
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- **Dashboard** - View key metrics and statistics at a glance
+- **Employee Management** - Display and manage employee information
+- **Attendance Tracking** - Mark daily attendance with check-in/check-out times
+- **Leave Requests** - Employees can apply for different types of leave
+- **Leave Approval** - HR module to approve or reject leave requests
 
-## Code scaffolding
+## 🛠️ Technologies Used
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **Framework:** Angular 17+ (Standalone Components)
+- **Language:** TypeScript
+- **UI Library:** Angular Material
+- **Architecture:** Modular with Services and Reactive Forms
+- **Routing:** Angular Router
+- **State Management:** RxJS Observables
 
-## Build
+## 📋 Prerequisites
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- Node.js (v16 or higher)
+- npm (comes with Node.js)
+- Angular CLI
 
-## Running unit tests
+## 🔧 Installation
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+1. Clone the repository:
+```bash
+git clone https://github.com/abhishanfrancis/employee-attendance-system.git
+cd employee-attendance-system
+```
 
-## Running end-to-end tests
+2. Install dependencies:
+```bash
+npm install
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+3. Run the application:
+```bash
+ng serve
+```
 
-## Further help
+4. Open your browser and navigate to:
+```
+http://localhost:4200
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 📁 Project Structure
+
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── dashboard/
+│   │   ├── employee-list/
+│   │   ├── attendance-tracker/
+│   │   ├── leave-request/
+│   │   └── leave-approval/
+│   ├── models/
+│   │   └── employee.model.ts
+│   ├── services/
+│   │   ├── employee.service.ts
+│   │   ├── attendance.service.ts
+│   │   └── leave.service.ts
+│   ├── app.component.*
+│   ├── app.config.ts
+│   └── app.routes.ts
+└── styles.css
+```
+
+## 🎯 Features in Detail
+
+### Dashboard
+- Total employees count
+- Present/Absent statistics for today
+- Pending leave requests count
+- Approved leaves count
+- Quick action buttons
+
+### Employee List
+- View all employees in a table format
+- Display employee details (ID, Name, Email, Department, Position, Join Date)
+
+### Attendance Tracker
+- Mark attendance for employees
+- Select date and status (Present/Absent/Half-Day/Late)
+- Record check-in and check-out times
+- View attendance history
+
+### Leave Request
+- Apply for leave
+- Choose leave type (Sick/Casual/Vacation/Personal)
+- Select start and end dates
+- Provide reason for leave
+
+### Leave Approval (HR Module)
+- View all leave requests
+- Approve or reject pending requests
+- Track status of all leave applications
+
+## 🔄 Future Enhancements
+
+- [ ] Connect to REST API backend
+- [ ] Add authentication and authorization
+- [ ] Implement role-based access control
+- [ ] Add reports and analytics
+- [ ] Export data to Excel/PDF
+- [ ] Email notifications
+- [ ] Calendar view for attendance
+- [ ] Employee profile management
+- [ ] Multi-language support
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📝 License
+
+This project is open source and available under the MIT License.
+
+## 👨‍💻 Author
+
+Your Name - [GitHub Profile](https://github.com/abhishanfrancis)
+
+## 📞 Contact
+
+For any queries, please reach out via GitHub issues.
+
+---
+
+**Note:** This is a frontend-only application with mock data. For production use, connect to a real backend API.
