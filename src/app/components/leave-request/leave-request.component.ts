@@ -1,0 +1,86 @@
+// src/app/components/leave-request/leave-request.component.ts
+
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { Employee, LeaveRequest } from '../../models/employee.model';
+import { EmployeeService } from '../../services/employee.service';
+import { LeaveService } from '../../services/leave.service';
+
+@Component({
+  selector: 'app-leave-request',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatDatepickerModule
+  ],
+  templateUrl: './leave-request.component.html',
+  styleUrls: ['./leave-request.component.css']
+})
+export class LeaveRequestComponent implements OnInit {
+  leaveForm: FormGroup;
+  employees: Employee[] = [];
+  leaveTypes = ['Sick', 'Casual', 'Vacation', 'Personal'];
+
+  constructor(
+    private fb: FormBuilder,
+    private employeeService: EmployeeService,
+    private leaveService: LeaveService
+  ) {
+    this.leaveForm = this.fb.group({
+      employeeId: ['', Validators.required],
+      leaveType: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      reason: ['', Validators.required]
+    });
+  }
+
+  ngOnInit(): void {
+    this.loadEmployees();
+  }
+
+  loadEmployees(): void {
+    this.employeeService.getEmployees().subscribe(
+      data => this.employees = data
+    );
+  }
+
+  onSubmit(): void {
+    if (this.leaveForm.valid) {
+      const employeeId = this.leaveForm.value.employeeId;
+      const employee = this.employees.find(e => e.id === employeeId);
+
+      const leaveRequest: LeaveRequest = {
+        id: 0,
+        employeeId: employeeId,
+        employeeName: employee ? employee.name : '',
+        leaveType: this.leaveForm.value.leaveType,
+        startDate: this.leaveForm.value.startDate,
+        endDate: this.leaveForm.value.endDate,
+        reason: this.leaveForm.value.reason,
+        status: 'Pending',
+        appliedDate: new Date()
+      };
+
+      this.leaveService.applyLeave(leaveRequest).subscribe(
+        result => {
+          alert('Leave request submitted successfully!');
+          this.leaveForm.reset();
+        }
+      );
+    }
+  }
+}

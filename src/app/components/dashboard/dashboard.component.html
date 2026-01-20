@@ -1,0 +1,74 @@
+<!-- src/app/components/dashboard/dashboard.component.html -->
+
+<div class="dashboard-container">
+    <h1>Dashboard</h1>
+
+    <div class="stats-grid">
+        <mat-card class="stat-card">
+            <mat-card-header>
+                <mat-card-title>Total Employees</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="stat-value">{{ stats.totalEmployees }}</div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="stat-card present">
+            <mat-card-header>
+                <mat-card-title>Present Today</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="stat-value">{{ stats.presentToday }}</div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="stat-card absent">
+            <mat-card-header>
+                <mat-card-title>Absent Today</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="stat-value">{{ stats.absentToday }}</div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="stat-card pending">
+            <mat-card-header>
+                <mat-card-title>Pending Leave Requests</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="stat-value">{{ stats.pendingLeaveRequests }}</div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="stat-card approved">
+            <mat-card-header>
+                <mat-card-title>Approved Leaves</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="stat-value">{{ stats.approvedLeaves }}</div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <div class="quick-actions">
+        <h2>Quick Actions</h2>
+        <div class="action-buttons">
+            <button mat-raised-button color="primary" routerLink="/employees">
+                <mat-icon>people</mat-icon>
+                View Employees
+            </button>
+            <button mat-raised-button color="accent" routerLink="/attendance">
+                <mat-icon>event_available</mat-icon>
+                Mark Attendance
+            </button>
+            <button mat-raised-button color="warn" routerLink="/leave-request">
+                <mat-icon>event_busy</mat-icon>
+                Apply for Leave
+            </button>
+            <button mat-raised-button routerLink="/leave-approval">
+                <mat-icon>approval</mat-icon>
+                Approve Leaves
+            </button>
+        </div>
+    </div>
+</div>
