@@ -24,7 +24,7 @@ A responsive web application built with Angular 17+ and TypeScript for managing 
 
 
 ### Preview
-[Click Here](https://abhishanfrancis.github.io/employee-attendance-system/)
+[Click Here](https://employee-attendance-system-l3t6azll5-falconisheres-projects.vercel.app/dashboard)
 
 ## 📋 Prerequisites
 
