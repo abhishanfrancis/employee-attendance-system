@@ -24,7 +24,7 @@ A responsive web application built with Angular 17+ and TypeScript for managing 
 
 
 ### Preview
-[Click Here](https://employee-attendance-system-ochre.vercel.app/dashboard)
+[Click Here](https://employee-attendance-system-ochre.vercel.app/)
 
 ## 📋 Prerequisites
 
