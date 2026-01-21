@@ -20,8 +20,11 @@ A responsive web application built with Angular 17+ and TypeScript for managing 
 - **State Management:** RxJS Observables
 
 ### Preview
-![Preview](preview.gif)
-g
+[Click Here](https://abhishanfrancis.github.io/employee-attendance-system/)
+
+### Screenshot
+![Screenshot](preview.gif)
+
 ## 📋 Prerequisites
 
 - Node.js (v16 or higher)
