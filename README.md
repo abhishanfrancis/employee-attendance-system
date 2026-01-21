@@ -19,11 +19,12 @@ A responsive web application built with Angular 17+ and TypeScript for managing 
 - **Routing:** Angular Router
 - **State Management:** RxJS Observables
 
-### Preview
-[Click Here](https://abhishanfrancis.github.io/employee-attendance-system/)
-
 ### Screenshot
 ![Screenshot](preview.gif)
+
+
+### Preview
+[Click Here](https://abhishanfrancis.github.io/employee-attendance-system/)
 
 ## 📋 Prerequisites
 
