@@ -1,48 +1,146 @@
 /* src/app/components/leave-approval/leave-approval.component.css */
 
 .leave-approval-container {
-    padding: 20px;
-    max-width: 1400px;
-    margin: 0 auto;
+  max-width: 1400px;
+  margin: 0 auto;
+  animation: fadeInUp 0.4s ease-out;
 }
 
-h1 {
-    margin-bottom: 20px;
-    color: #333;
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.page-header {
+  margin-bottom: 28px;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-icon {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  color: #d97706;
+}
+
+.header-title h1 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.page-subtitle {
+  color: #6b7280;
+  font-size: 14px;
+  margin-top: 2px;
+}
+
+mat-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #667eea;
+  font-size: 18px;
+}
+
+.request-count {
+  font-size: 12px;
+  background: #e0e7ff;
+  color: #667eea;
+  padding: 3px 10px;
+  border-radius: 12px;
+  margin-left: 8px;
+  font-weight: 600;
 }
 
 table {
-    width: 100%;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-th {
-    background-color: #3f51b5;
-    color: white;
-    font-weight: bold;
+.employee-name {
+  font-weight: 600;
+  color: #1a1a2e;
 }
 
-tr:hover {
-    background-color: #f5f5f5;
+.leave-type-badge {
+  background: #e0e7ff;
+  color: #4338ca;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
+.reason-text {
+  color: #6b7280;
+  font-size: 13px;
+  max-width: 200px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.action-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.approve-btn, .reject-btn {
+  font-size: 12px !important;
+  padding: 0 12px !important;
+  height: 34px !important;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 20px;
+  color: #9ca3af;
+}
+
+.empty-state mat-icon {
+  font-size: 56px;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 12px;
+  opacity: 0.5;
+}
+
+.empty-state p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+/* Status badge styling */
 .status-badge {
-    padding: 5px 10px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: bold;
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .status-badge.pending {
-    background-color: #ff9800;
-    color: white;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  color: #92400e;
 }
 
 .status-badge.approved {
-    background-color: #4caf50;
-    color: white;
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  color: #065f46;
 }
 
 .status-badge.rejected {
-    background-color: #f44336;
-    color: white;
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  color: #991b1b;
 }

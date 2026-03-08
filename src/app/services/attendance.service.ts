@@ -1,73 +1,64 @@
 // src/app/services/attendance.service.ts
+// AttendanceService - Manages attendance records via HTTP and JSON Server
+// Uses RxJS Observables for async data operations
 
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { AttendanceRecord } from '../models/employee.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root' // Singleton service via Angular DI
 })
 export class AttendanceService {
-  private attendanceRecords: AttendanceRecord[] = [
-    {
-      id: 1,
-      employeeId: 1,
-      date: new Date(),
-      status: 'Present',
-      checkIn: '09:00 AM',
-      checkOut: '06:00 PM'
-    },
-    {
-      id: 2,
-      employeeId: 2,
-      date: new Date(),
-      status: 'Present',
-      checkIn: '09:15 AM',
-      checkOut: '06:15 PM'
-    },
-    {
-      id: 3,
-      employeeId: 3,
-      date: new Date(),
-      status: 'Absent'
-    },
-    {
-      id: 4,
-      employeeId: 4,
-      date: new Date(),
-      status: 'Present',
-      checkIn: '08:45 AM',
-      checkOut: '05:45 PM'
-    }
-  ];
+  // JSON Server API endpoint for attendance
+  private apiUrl = 'http://localhost:3000/attendance';
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
+  /**
+   * GET all attendance records
+   * Returns Observable<AttendanceRecord[]> for async subscription
+   */
   getAttendanceRecords(): Observable<AttendanceRecord[]> {
-    return of(this.attendanceRecords);
+    return this.http.get<AttendanceRecord[]>(this.apiUrl);
   }
 
+  /**
+   * GET attendance records filtered by employee ID
+   * Uses JSON Server query parameter filtering
+   */
   getAttendanceByEmployee(employeeId: number): Observable<AttendanceRecord[]> {
-    return of(this.attendanceRecords.filter(record => record.employeeId === employeeId));
+    return this.http.get<AttendanceRecord[]>(`${this.apiUrl}?employeeId=${employeeId}`);
   }
 
-  getAttendanceByDate(date: Date): Observable<AttendanceRecord[]> {
-    return of(this.attendanceRecords.filter(record =>
-      record.date.toDateString() === date.toDateString()
-    ));
+  /**
+   * GET attendance records filtered by date
+   * Expects ISO date string (YYYY-MM-DD)
+   */
+  getAttendanceByDate(date: string): Observable<AttendanceRecord[]> {
+    return this.http.get<AttendanceRecord[]>(`${this.apiUrl}?date=${date}`);
   }
 
-  markAttendance(attendance: AttendanceRecord): Observable<AttendanceRecord> {
-    attendance.id = Math.max(...this.attendanceRecords.map(a => a.id), 0) + 1;
-    this.attendanceRecords.push(attendance);
-    return of(attendance);
+  /**
+   * POST - Mark attendance for an employee
+   * Creates a new attendance record
+   */
+  markAttendance(attendance: Omit<AttendanceRecord, 'id'>): Observable<AttendanceRecord> {
+    return this.http.post<AttendanceRecord>(this.apiUrl, attendance);
   }
 
+  /**
+   * PUT - Update an existing attendance record
+   */
   updateAttendance(attendance: AttendanceRecord): Observable<AttendanceRecord> {
-    const index = this.attendanceRecords.findIndex(a => a.id === attendance.id);
-    if (index !== -1) {
-      this.attendanceRecords[index] = attendance;
-    }
-    return of(attendance);
+    return this.http.put<AttendanceRecord>(`${this.apiUrl}/${attendance.id}`, attendance);
+  }
+
+  /**
+   * DELETE - Remove an attendance record
+   */
+  deleteAttendance(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

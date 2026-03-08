@@ -1,4 +1,6 @@
 // src/app/components/dashboard/dashboard.component.ts
+// Dashboard Component - Shows aggregated attendance/leave statistics
+// Combines data from multiple services using RxJS forkJoin
 
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -44,10 +46,16 @@ export class DashboardComponent implements OnInit {
     this.loadDashboardStats();
   }
 
+  /**
+   * Load dashboard statistics using RxJS forkJoin
+   * Combines multiple HTTP observables into a single subscription
+   */
   loadDashboardStats(): void {
+    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+
     forkJoin({
       employees: this.employeeService.getEmployees(),
-      attendance: this.attendanceService.getAttendanceByDate(new Date()),
+      attendance: this.attendanceService.getAttendanceByDate(today),
       leaves: this.leaveService.getLeaveRequests()
     }).subscribe(result => {
       this.stats.totalEmployees = result.employees.length;

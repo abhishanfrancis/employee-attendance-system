@@ -1,84 +1,74 @@
 // src/app/services/leave.service.ts
+// LeaveService - Manages leave request CRUD operations via HTTP
+// Provides methods for applying, approving, and rejecting leave requests
 
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { LeaveRequest } from '../models/employee.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root' // Available application-wide via Angular DI
 })
 export class LeaveService {
-  private leaveRequests: LeaveRequest[] = [
-    {
-      id: 1,
-      employeeId: 1,
-      employeeName: 'John Doe',
-      leaveType: 'Sick',
-      startDate: new Date('2024-02-01'),
-      endDate: new Date('2024-02-02'),
-      reason: 'Fever and cold',
-      status: 'Pending',
-      appliedDate: new Date()
-    },
-    {
-      id: 2,
-      employeeId: 2,
-      employeeName: 'Jane Smith',
-      leaveType: 'Vacation',
-      startDate: new Date('2024-02-15'),
-      endDate: new Date('2024-02-20'),
-      reason: 'Family vacation',
-      status: 'Approved',
-      appliedDate: new Date('2024-01-15')
-    },
-    {
-      id: 3,
-      employeeId: 4,
-      employeeName: 'Sarah Williams',
-      leaveType: 'Casual',
-      startDate: new Date('2024-02-05'),
-      endDate: new Date('2024-02-05'),
-      reason: 'Personal work',
-      status: 'Pending',
-      appliedDate: new Date()
-    }
-  ];
+  // JSON Server API endpoint for leaves
+  private apiUrl = 'http://localhost:3000/leaves';
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
+  /**
+   * GET all leave requests
+   */
   getLeaveRequests(): Observable<LeaveRequest[]> {
-    return of(this.leaveRequests);
+    return this.http.get<LeaveRequest[]>(this.apiUrl);
   }
 
+  /**
+   * GET leave requests filtered by employee ID
+   */
   getLeavesByEmployee(employeeId: number): Observable<LeaveRequest[]> {
-    return of(this.leaveRequests.filter(leave => leave.employeeId === employeeId));
+    return this.http.get<LeaveRequest[]>(`${this.apiUrl}?employeeId=${employeeId}`);
   }
 
+  /**
+   * GET only pending leave requests (for HR approval view)
+   */
   getPendingLeaves(): Observable<LeaveRequest[]> {
-    return of(this.leaveRequests.filter(leave => leave.status === 'Pending'));
+    return this.http.get<LeaveRequest[]>(`${this.apiUrl}?status=Pending`);
   }
 
-  applyLeave(leave: LeaveRequest): Observable<LeaveRequest> {
-    leave.id = Math.max(...this.leaveRequests.map(l => l.id), 0) + 1;
-    leave.appliedDate = new Date();
-    leave.status = 'Pending';
-    this.leaveRequests.push(leave);
-    return of(leave);
+  /**
+   * POST - Submit a new leave application
+   * Sets status to 'Pending' and records the applied date
+   */
+  applyLeave(leave: Omit<LeaveRequest, 'id'>): Observable<LeaveRequest> {
+    return this.http.post<LeaveRequest>(this.apiUrl, {
+      ...leave,
+      status: 'Pending',
+      appliedDate: new Date().toISOString().split('T')[0]
+    });
   }
 
-  approveLeave(id: number): Observable<LeaveRequest | undefined> {
-    const leave = this.leaveRequests.find(l => l.id === id);
-    if (leave) {
-      leave.status = 'Approved';
-    }
-    return of(leave);
+  /**
+   * PATCH - Approve a leave request by ID
+   * Only updates the status field
+   */
+  approveLeave(id: number): Observable<LeaveRequest> {
+    return this.http.patch<LeaveRequest>(`${this.apiUrl}/${id}`, { status: 'Approved' });
   }
 
-  rejectLeave(id: number): Observable<LeaveRequest | undefined> {
-    const leave = this.leaveRequests.find(l => l.id === id);
-    if (leave) {
-      leave.status = 'Rejected';
-    }
-    return of(leave);
+  /**
+   * PATCH - Reject a leave request by ID
+   * Only updates the status field
+   */
+  rejectLeave(id: number): Observable<LeaveRequest> {
+    return this.http.patch<LeaveRequest>(`${this.apiUrl}/${id}`, { status: 'Rejected' });
+  }
+
+  /**
+   * DELETE - Remove a leave request
+   */
+  deleteLeave(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

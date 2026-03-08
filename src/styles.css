@@ -1,86 +1,158 @@
 /* src/styles.css - Global Styles */
+/* Employee Attendance System - Application-wide styling */
 
 /* Import Angular Material theme */
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 /* Reset and base styles */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html,
 body {
-    height: 100%;
+  height: 100%;
 }
 
 body {
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    background-color: #f5f5f5;
+  margin: 0;
+  font-family: 'Inter', Roboto, "Helvetica Neue", sans-serif;
+  background-color: #f0f2f5;
+  color: #1a1a2e;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Typography */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-weight: 500;
-    color: #333;
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: #1a1a2e;
+  letter-spacing: -0.02em;
 }
 
-h1 {
-    font-size: 28px;
-    margin-bottom: 20px;
-}
+h1 { font-size: 26px; margin-bottom: 20px; }
+h2 { font-size: 22px; margin-bottom: 16px; }
 
-h2 {
-    font-size: 24px;
-    margin-bottom: 16px;
-}
-
-/* Material overrides */
+/* Material Card overrides */
 .mat-mdc-card {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-    border-radius: 8px !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06) !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(0,0,0,0.04);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.mat-mdc-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 2px 4px rgba(0,0,0,0.06) !important;
 }
 
 .mat-mdc-form-field {
-    width: 100%;
+  width: 100%;
 }
 
 .mat-mdc-raised-button {
-    text-transform: uppercase;
-    font-weight: 500;
+  text-transform: none !important;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  border-radius: 8px !important;
+  padding: 0 20px !important;
+  height: 40px !important;
 }
 
 /* Table styling */
 .mat-mdc-table {
-    width: 100%;
-    box-shadow: none !important;
+  width: 100%;
+  box-shadow: none !important;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.mat-mdc-header-row {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
 }
 
 .mat-mdc-header-cell {
-    font-weight: 600;
-    font-size: 14px;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  color: white !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: none !important;
 }
 
 .mat-mdc-cell {
-    font-size: 14px;
+  font-size: 14px;
+  color: #374151;
+  border-bottom: 1px solid #f0f0f0 !important;
+}
+
+.mat-mdc-row:hover {
+  background-color: #f8f9ff !important;
+}
+
+.mat-mdc-row:nth-child(even) {
+  background-color: #fafbfc;
+}
+
+/* MatSnackBar custom styles */
+.success-snackbar {
+  --mdc-snackbar-container-color: #059669;
+  --mdc-snackbar-supporting-text-color: white;
+  border-radius: 8px;
+}
+
+.error-snackbar {
+  --mdc-snackbar-container-color: #dc2626;
+  --mdc-snackbar-supporting-text-color: white;
+  border-radius: 8px;
+}
+
+/* Form field overrides */
+.mat-mdc-form-field-subscript-wrapper {
+  margin-bottom: 4px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
 }
 
 /* Utility classes */
-.text-center {
-    text-align: center;
+.text-center { text-align: center; }
+.mt-20 { margin-top: 20px; }
+.mb-20 { margin-bottom: 20px; }
+
+/* Page enter animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.mt-20 {
-    margin-top: 20px;
-}
-
-.mb-20 {
-    margin-bottom: 20px;
+.page-animate {
+  animation: fadeInUp 0.4s ease-out;
 }

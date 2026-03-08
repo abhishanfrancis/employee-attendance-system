@@ -1,109 +1,132 @@
 <!-- src/app/components/attendance-tracker/attendance-tracker.component.html -->
+<!-- Attendance Tracker - Mark attendance form + records table with highlight directive -->
 
-<div class="attendance-container">
-    <h1>Attendance Tracker</h1>
+<div class="attendance-container page-animate">
+  <h1>Attendance Tracker</h1>
 
-    <mat-card class="form-card">
-        <mat-card-header>
-            <mat-card-title>Mark Attendance</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            <form [formGroup]="attendanceForm" (ngSubmit)="onSubmit()">
-                <div class="form-row">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Employee</mat-label>
-                        <mat-select formControlName="employeeId">
-                            <mat-option *ngFor="let emp of employees" [value]="emp.id">
-                                {{ emp.name }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+  <!-- Mark Attendance Form - Reactive Form -->
+  <mat-card class="form-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>event_available</mat-icon> Mark Attendance
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="attendanceForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <!-- Employee selection with MatSelect -->
+          <mat-form-field appearance="outline">
+            <mat-label>Employee</mat-label>
+            <mat-select formControlName="employeeId">
+              <mat-option *ngFor="let emp of employees" [value]="emp.id">
+                {{ emp.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error>Please select an employee</mat-error>
+          </mat-form-field>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>Date</mat-label>
-                        <input matInput [matDatepicker]="picker" formControlName="date">
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
-                </div>
+          <!-- Date field -->
+          <mat-form-field appearance="outline">
+            <mat-label>Date</mat-label>
+            <input matInput type="date" formControlName="date">
+            <mat-error>Date is required</mat-error>
+          </mat-form-field>
+        </div>
 
-                <div class="form-row">
-                    <mat-form-field appearance="outline">
-                        <mat-label>Status</mat-label>
-                        <mat-select formControlName="status">
-                            <mat-option *ngFor="let status of statusOptions" [value]="status">
-                                {{ status }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+        <div class="form-row">
+          <!-- Status selection with MatSelect -->
+          <mat-form-field appearance="outline">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status">
+              <mat-option *ngFor="let status of statusOptions" [value]="status">
+                {{ status }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>Check In</mat-label>
-                        <input matInput type="time" formControlName="checkIn">
-                    </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Check In</mat-label>
+            <input matInput type="time" formControlName="checkIn">
+          </mat-form-field>
 
-                    <mat-form-field appearance="outline">
-                        <mat-label>Check Out</mat-label>
-                        <input matInput type="time" formControlName="checkOut">
-                    </mat-form-field>
-                </div>
+          <mat-form-field appearance="outline">
+            <mat-label>Check Out</mat-label>
+            <input matInput type="time" formControlName="checkOut">
+          </mat-form-field>
+        </div>
 
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Notes</mat-label>
-                    <textarea matInput formControlName="notes" rows="3"></textarea>
-                </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Notes</mat-label>
+          <textarea matInput formControlName="notes" rows="3"></textarea>
+        </mat-form-field>
 
-                <button mat-raised-button color="primary" type="submit" [disabled]="!attendanceForm.valid">
-                    Mark Attendance
-                </button>
-            </form>
-        </mat-card-content>
-    </mat-card>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!attendanceForm.valid">
+          <mat-icon>check</mat-icon> Mark Attendance
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
 
-    <mat-card class="records-card">
-        <mat-card-header>
-            <mat-card-title>Attendance Records</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            <table mat-table [dataSource]="attendanceRecords">
+  <!-- Attendance Records Table -->
+  <mat-card class="records-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>list</mat-icon> Attendance Records
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <!-- Status filter using custom AttendanceStatusFilterPipe concept -->
+      <div class="filter-row">
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Filter by Status</mat-label>
+          <mat-select [(value)]="selectedStatusFilter" (selectionChange)="applyStatusFilter()">
+            <mat-option *ngFor="let status of filterStatuses" [value]="status">
+              {{ status }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-                <ng-container matColumnDef="employeeId">
-                    <th mat-header-cell *matHeaderCellDef>Employee ID</th>
-                    <td mat-cell *matCellDef="let record">{{ record.employeeId }}</td>
-                </ng-container>
+      <table mat-table [dataSource]="filteredRecords">
+        <ng-container matColumnDef="employeeId">
+          <th mat-header-cell *matHeaderCellDef>Employee ID</th>
+          <td mat-cell *matCellDef="let record">{{ record.employeeId }}</td>
+        </ng-container>
 
-                <ng-container matColumnDef="employeeName">
-                    <th mat-header-cell *matHeaderCellDef>Employee Name</th>
-                    <td mat-cell *matCellDef="let record">{{ getEmployeeName(record.employeeId) }}</td>
-                </ng-container>
+        <ng-container matColumnDef="employeeName">
+          <th mat-header-cell *matHeaderCellDef>Employee Name</th>
+          <td mat-cell *matCellDef="let record">{{ getEmployeeName(record.employeeId) }}</td>
+        </ng-container>
 
-                <ng-container matColumnDef="date">
-                    <th mat-header-cell *matHeaderCellDef>Date</th>
-                    <td mat-cell *matCellDef="let record">{{ record.date | date }}</td>
-                </ng-container>
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <!-- Built-in DatePipe for date formatting -->
+          <td mat-cell *matCellDef="let record">{{ record.date | date:'mediumDate' }}</td>
+        </ng-container>
 
-                <ng-container matColumnDef="status">
-                    <th mat-header-cell *matHeaderCellDef>Status</th>
-                    <td mat-cell *matCellDef="let record">
-                        <span [class]="'status-badge ' + record.status.toLowerCase()">
-                            {{ record.status }}
-                        </span>
-                    </td>
-                </ng-container>
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let record">
+            <span [class]="'status-badge ' + record.status.toLowerCase()">
+              {{ record.status }}
+            </span>
+          </td>
+        </ng-container>
 
-                <ng-container matColumnDef="checkIn">
-                    <th mat-header-cell *matHeaderCellDef>Check In</th>
-                    <td mat-cell *matCellDef="let record">{{ record.checkIn || '-' }}</td>
-                </ng-container>
+        <ng-container matColumnDef="checkIn">
+          <th mat-header-cell *matHeaderCellDef>Check In</th>
+          <td mat-cell *matCellDef="let record">{{ record.checkIn || '-' }}</td>
+        </ng-container>
 
-                <ng-container matColumnDef="checkOut">
-                    <th mat-header-cell *matHeaderCellDef>Check Out</th>
-                    <td mat-cell *matCellDef="let record">{{ record.checkOut || '-' }}</td>
-                </ng-container>
+        <ng-container matColumnDef="checkOut">
+          <th mat-header-cell *matHeaderCellDef>Check Out</th>
+          <td mat-cell *matCellDef="let record">{{ record.checkOut || '-' }}</td>
+        </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-        </mat-card-content>
-    </mat-card>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <!-- Custom Directive: appHighlightAbsent highlights absent rows with red background -->
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [appHighlightAbsent]="row.status"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
 </div>

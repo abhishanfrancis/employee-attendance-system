@@ -1,0 +1,139 @@
+/* src/app/app.component.css */
+/* Root Layout - Toolbar, Sidebar, and Content Area */
+
+/* Toolbar styles */
+.app-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  box-shadow: 0 2px 12px rgba(102, 126, 234, 0.4);
+  height: 60px;
+}
+
+.app-title {
+  margin-left: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: white;
+}
+
+.toolbar-spacer {
+  flex: 1;
+}
+
+/* HR Mode toggle in toolbar */
+.hr-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-size: 13px;
+  background: rgba(255,255,255,0.12);
+  padding: 4px 14px;
+  border-radius: 24px;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s ease;
+}
+
+.hr-toggle:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+.hr-toggle mat-icon {
+  font-size: 20px;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.hr-toggle mat-icon.active {
+  opacity: 1;
+  color: #ffd54f;
+  filter: drop-shadow(0 0 4px rgba(255, 213, 79, 0.5));
+}
+
+/* Sidenav container - fills remaining viewport below toolbar */
+.sidenav-container {
+  position: fixed;
+  top: 60px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+/* Sidebar styling */
+.app-sidenav {
+  width: 260px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8f9fc 100%);
+  border-right: 1px solid #e8eaef;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-sidenav mat-nav-list {
+  flex: 1;
+  padding-top: 8px;
+}
+
+/* Sidebar list items */
+:host ::ng-deep .mat-mdc-list-item {
+  margin: 4px 12px !important;
+  border-radius: 10px !important;
+  height: 46px !important;
+  transition: all 0.2s ease;
+}
+
+:host ::ng-deep .mat-mdc-list-item:hover {
+  background-color: #f0f2ff !important;
+}
+
+/* Active sidebar link highlight */
+:host ::ng-deep .active-link {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+:host ::ng-deep .active-link mat-icon {
+  color: white !important;
+}
+
+:host ::ng-deep .active-link span {
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+:host ::ng-deep .active-link .hr-badge {
+  background-color: rgba(255,255,255,0.25);
+}
+
+/* HR badge on sidebar items */
+.hr-badge {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: white;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Sidebar footer */
+.sidenav-footer {
+  padding: 16px;
+  text-align: center;
+  border-top: 1px solid #e8eaef;
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+/* Main content area */
+.main-content {
+  background-color: #f0f2f5;
+  min-height: 100%;
+  padding: 24px;
+}

@@ -1,0 +1,181 @@
+{
+  "employees": [
+    {
+      "id": 1,
+      "name": "John Doe",
+      "email": "john.doe@company.com",
+      "department": "IT",
+      "position": "Software Developer",
+      "joinDate": "2023-01-15"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "email": "jane.smith@company.com",
+      "department": "HR",
+      "position": "HR Manager",
+      "joinDate": "2022-06-20"
+    },
+    {
+      "id": 3,
+      "name": "Mike Johnson",
+      "email": "mike.johnson@company.com",
+      "department": "IT",
+      "position": "Backend Developer",
+      "joinDate": "2023-03-10"
+    },
+    {
+      "id": 4,
+      "name": "Sarah Williams",
+      "email": "sarah.williams@company.com",
+      "department": "Marketing",
+      "position": "Marketing Executive",
+      "joinDate": "2023-05-01"
+    },
+    {
+      "id": 5,
+      "name": "Robert Brown",
+      "email": "robert.brown@company.com",
+      "department": "Finance",
+      "position": "Financial Analyst",
+      "joinDate": "2023-07-15"
+    },
+    {
+      "id": 6,
+      "name": "Emily Davis",
+      "email": "emily.davis@company.com",
+      "department": "HR",
+      "position": "Recruiter",
+      "joinDate": "2024-01-10"
+    }
+  ],
+  "attendance": [
+    {
+      "id": 1,
+      "employeeId": 1,
+      "date": "2026-03-08",
+      "status": "Present",
+      "checkIn": "09:00",
+      "checkOut": "18:00"
+    },
+    {
+      "id": 2,
+      "employeeId": 2,
+      "date": "2026-03-08",
+      "status": "Present",
+      "checkIn": "09:15",
+      "checkOut": "18:15"
+    },
+    {
+      "id": 3,
+      "employeeId": 3,
+      "date": "2026-03-08",
+      "status": "Absent",
+      "notes": "Sick leave"
+    },
+    {
+      "id": 4,
+      "employeeId": 4,
+      "date": "2026-03-08",
+      "status": "Present",
+      "checkIn": "08:45",
+      "checkOut": "17:45"
+    },
+    {
+      "id": 5,
+      "employeeId": 5,
+      "date": "2026-03-08",
+      "status": "Late",
+      "checkIn": "10:30",
+      "checkOut": "19:00"
+    },
+    {
+      "id": 6,
+      "employeeId": 6,
+      "date": "2026-03-08",
+      "status": "Half-Day",
+      "checkIn": "09:00",
+      "checkOut": "13:00"
+    },
+    {
+      "id": 7,
+      "employeeId": 1,
+      "date": "2026-03-07",
+      "status": "Present",
+      "checkIn": "09:00",
+      "checkOut": "18:00"
+    },
+    {
+      "id": 8,
+      "employeeId": 2,
+      "date": "2026-03-07",
+      "status": "Absent",
+      "notes": "Personal leave"
+    },
+    {
+      "id": 9,
+      "employeeId": 3,
+      "date": "2026-03-07",
+      "status": "Present",
+      "checkIn": "09:10",
+      "checkOut": "18:10"
+    }
+  ],
+  "leaves": [
+    {
+      "id": 1,
+      "employeeId": 1,
+      "employeeName": "John Doe",
+      "leaveType": "Sick",
+      "startDate": "2026-03-10",
+      "endDate": "2026-03-11",
+      "reason": "Fever and cold, need rest for recovery",
+      "status": "Approved",
+      "appliedDate": "2026-03-08"
+    },
+    {
+      "id": 2,
+      "employeeId": 2,
+      "employeeName": "Jane Smith",
+      "leaveType": "Vacation",
+      "startDate": "2026-03-15",
+      "endDate": "2026-03-20",
+      "reason": "Family vacation trip to the mountains",
+      "status": "Approved",
+      "appliedDate": "2026-02-15"
+    },
+    {
+      "id": 3,
+      "employeeId": 4,
+      "employeeName": "Sarah Williams",
+      "leaveType": "Casual",
+      "startDate": "2026-03-12",
+      "endDate": "2026-03-12",
+      "reason": "Personal work - bank and government office visits",
+      "status": "Pending",
+      "appliedDate": "2026-03-07"
+    },
+    {
+      "id": 4,
+      "employeeId": 3,
+      "employeeName": "Mike Johnson",
+      "leaveType": "Sick",
+      "startDate": "2026-03-08",
+      "endDate": "2026-03-09",
+      "reason": "Flu symptoms, doctor advised rest",
+      "status": "Approved",
+      "appliedDate": "2026-03-07"
+    },
+    {
+      "id": 5,
+      "employeeId": 5,
+      "employeeName": "Robert Brown",
+      "leaveType": "Personal",
+      "startDate": "2026-03-25",
+      "endDate": "2026-03-26",
+      "reason": "Moving to a new apartment, need time for setup",
+      "status": "Pending",
+      "appliedDate": "2026-03-06"
+    }
+  ]
+}

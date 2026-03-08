@@ -1,74 +1,104 @@
 <!-- src/app/components/dashboard/dashboard.component.html -->
 
-<div class="dashboard-container">
-    <h1>Dashboard</h1>
+<div class="dashboard-container page-animate">
+    <div class="page-header">
+      <h1>Dashboard</h1>
+      <p class="page-subtitle">Overview of employee attendance and leave management</p>
+    </div>
 
     <div class="stats-grid">
-        <mat-card class="stat-card">
-            <mat-card-header>
-                <mat-card-title>Total Employees</mat-card-title>
-            </mat-card-header>
+        <mat-card class="stat-card total">
             <mat-card-content>
-                <div class="stat-value">{{ stats.totalEmployees }}</div>
+                <div class="stat-icon-wrap total">
+                    <mat-icon>groups</mat-icon>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Total Employees</span>
+                    <span class="stat-value">{{ stats.totalEmployees }}</span>
+                </div>
             </mat-card-content>
         </mat-card>
 
         <mat-card class="stat-card present">
-            <mat-card-header>
-                <mat-card-title>Present Today</mat-card-title>
-            </mat-card-header>
             <mat-card-content>
-                <div class="stat-value">{{ stats.presentToday }}</div>
+                <div class="stat-icon-wrap present">
+                    <mat-icon>check_circle</mat-icon>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Present Today</span>
+                    <span class="stat-value">{{ stats.presentToday }}</span>
+                </div>
             </mat-card-content>
         </mat-card>
 
         <mat-card class="stat-card absent">
-            <mat-card-header>
-                <mat-card-title>Absent Today</mat-card-title>
-            </mat-card-header>
             <mat-card-content>
-                <div class="stat-value">{{ stats.absentToday }}</div>
+                <div class="stat-icon-wrap absent">
+                    <mat-icon>cancel</mat-icon>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Absent Today</span>
+                    <span class="stat-value">{{ stats.absentToday }}</span>
+                </div>
             </mat-card-content>
         </mat-card>
 
         <mat-card class="stat-card pending">
-            <mat-card-header>
-                <mat-card-title>Pending Leave Requests</mat-card-title>
-            </mat-card-header>
             <mat-card-content>
-                <div class="stat-value">{{ stats.pendingLeaveRequests }}</div>
+                <div class="stat-icon-wrap pending">
+                    <mat-icon>hourglass_empty</mat-icon>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Pending Leaves</span>
+                    <span class="stat-value">{{ stats.pendingLeaveRequests }}</span>
+                </div>
             </mat-card-content>
         </mat-card>
 
         <mat-card class="stat-card approved">
-            <mat-card-header>
-                <mat-card-title>Approved Leaves</mat-card-title>
-            </mat-card-header>
             <mat-card-content>
-                <div class="stat-value">{{ stats.approvedLeaves }}</div>
+                <div class="stat-icon-wrap approved">
+                    <mat-icon>thumb_up</mat-icon>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-label">Approved Leaves</span>
+                    <span class="stat-value">{{ stats.approvedLeaves }}</span>
+                </div>
             </mat-card-content>
         </mat-card>
     </div>
 
     <div class="quick-actions">
         <h2>Quick Actions</h2>
-        <div class="action-buttons">
-            <button mat-raised-button color="primary" routerLink="/employees">
-                <mat-icon>people</mat-icon>
-                View Employees
-            </button>
-            <button mat-raised-button color="accent" routerLink="/attendance">
-                <mat-icon>event_available</mat-icon>
-                Mark Attendance
-            </button>
-            <button mat-raised-button color="warn" routerLink="/leave-request">
-                <mat-icon>event_busy</mat-icon>
-                Apply for Leave
-            </button>
-            <button mat-raised-button routerLink="/leave-approval">
-                <mat-icon>approval</mat-icon>
-                Approve Leaves
-            </button>
+        <div class="action-grid">
+            <div class="action-card" routerLink="/employees">
+                <div class="action-icon employees">
+                    <mat-icon>people</mat-icon>
+                </div>
+                <span class="action-label">View Employees</span>
+                <span class="action-desc">Manage employee records</span>
+            </div>
+            <div class="action-card" routerLink="/attendance">
+                <div class="action-icon attendance">
+                    <mat-icon>event_available</mat-icon>
+                </div>
+                <span class="action-label">Mark Attendance</span>
+                <span class="action-desc">Track daily attendance</span>
+            </div>
+            <div class="action-card" routerLink="/leave-request">
+                <div class="action-icon leave">
+                    <mat-icon>event_busy</mat-icon>
+                </div>
+                <span class="action-label">Apply for Leave</span>
+                <span class="action-desc">Submit leave request</span>
+            </div>
+            <div class="action-card" routerLink="/leave-approval">
+                <div class="action-icon approval">
+                    <mat-icon>admin_panel_settings</mat-icon>
+                </div>
+                <span class="action-label">Approve Leaves</span>
+                <span class="action-desc">HR admin panel</span>
+            </div>
         </div>
     </div>
 </div>

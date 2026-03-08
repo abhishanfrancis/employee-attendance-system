@@ -1,0 +1,137 @@
+<!-- src/app/components/employee-detail/employee-detail.component.html -->
+<!-- Employee Detail View - Shows full employee profile with attendance and leave history -->
+
+<div class="detail-container" *ngIf="employee">
+  <!-- Back button and header -->
+  <div class="header-row">
+    <button mat-icon-button (click)="goBack()" class="back-btn">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1>{{ employee.name | uppercase }}</h1>
+  </div>
+
+  <!-- Employee Information Card -->
+  <mat-card class="info-card">
+    <mat-card-header>
+      <mat-icon mat-card-avatar class="avatar-icon">person</mat-icon>
+      <mat-card-title>{{ employee.name }}</mat-card-title>
+      <mat-card-subtitle>{{ employee.position }} &mdash; {{ employee.department }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="info-grid">
+        <div class="info-item">
+          <strong>Employee ID:</strong>
+          <span>{{ employee.id }}</span>
+        </div>
+        <div class="info-item">
+          <strong>Email:</strong>
+          <span>{{ employee.email }}</span>
+        </div>
+        <div class="info-item">
+          <strong>Department:</strong>
+          <span>{{ employee.department }}</span>
+        </div>
+        <div class="info-item">
+          <strong>Position:</strong>
+          <span>{{ employee.position }}</span>
+        </div>
+        <div class="info-item">
+          <strong>Join Date:</strong>
+          <!-- Built-in DatePipe for date formatting -->
+          <span>{{ employee.joinDate | date:'longDate' }}</span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Attendance History Card -->
+  <mat-card class="section-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>event_available</mat-icon> Attendance History
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="attendanceRecords" *ngIf="attendanceRecords.length > 0">
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let record">{{ record.date | date:'mediumDate' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let record">
+            <span [class]="'status-badge ' + record.status.toLowerCase()">
+              {{ record.status }}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="checkIn">
+          <th mat-header-cell *matHeaderCellDef>Check In</th>
+          <td mat-cell *matCellDef="let record">{{ record.checkIn || '-' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="checkOut">
+          <th mat-header-cell *matHeaderCellDef>Check Out</th>
+          <td mat-cell *matCellDef="let record">{{ record.checkOut || '-' }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="attendanceColumns"></tr>
+        <!-- Custom directive: highlights absent rows with red background -->
+        <tr mat-row *matRowDef="let row; columns: attendanceColumns;" [appHighlightAbsent]="row.status"></tr>
+      </table>
+      <p *ngIf="attendanceRecords.length === 0" class="no-data">No attendance records found.</p>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Leave History Card -->
+  <mat-card class="section-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>event_busy</mat-icon> Leave History
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="leaveRequests" *ngIf="leaveRequests.length > 0">
+        <ng-container matColumnDef="leaveType">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell *matCellDef="let leave">{{ leave.leaveType }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="startDate">
+          <th mat-header-cell *matHeaderCellDef>Start Date</th>
+          <td mat-cell *matCellDef="let leave">{{ leave.startDate | date:'mediumDate' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="endDate">
+          <th mat-header-cell *matHeaderCellDef>End Date</th>
+          <td mat-cell *matCellDef="let leave">{{ leave.endDate | date:'mediumDate' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="reason">
+          <th mat-header-cell *matHeaderCellDef>Reason</th>
+          <td mat-cell *matCellDef="let leave">{{ leave.reason }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let leave">
+            <span [class]="'status-badge ' + leave.status.toLowerCase()">
+              {{ leave.status }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="leaveColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: leaveColumns;"></tr>
+      </table>
+      <p *ngIf="leaveRequests.length === 0" class="no-data">No leave requests found.</p>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<!-- Loading state -->
+<div class="loading" *ngIf="!employee">
+  <p>Loading employee details...</p>
+</div>

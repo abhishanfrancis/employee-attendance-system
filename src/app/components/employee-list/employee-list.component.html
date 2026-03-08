@@ -1,51 +1,194 @@
 <!-- src/app/components/employee-list/employee-list.component.html -->
+<!-- Employee List with Department Filter, Template-Driven Add Form, and Material Table -->
 
-<div class="employee-list-container">
+<div class="employee-list-container page-animate">
+  <div class="header-row">
     <h1>Employee List</h1>
+    <button mat-raised-button color="primary" (click)="toggleAddForm()">
+      <mat-icon>{{ showAddForm ? 'close' : 'person_add' }}</mat-icon>
+      {{ showAddForm ? 'Cancel' : 'Add Employee' }}
+    </button>
+  </div>
 
-    <mat-card>
-        <mat-card-content>
-            <table mat-table [dataSource]="employees" class="employee-table">
+  <!-- ============================================
+       TEMPLATE-DRIVEN FORM - Employee Registration
+       Uses FormsModule with ngModel two-way binding
+       Validation: required fields, minlength, email pattern
+       ============================================ -->
+  <mat-card class="add-form-card" *ngIf="showAddForm">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>person_add</mat-icon> Register New Employee
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form #employeeForm="ngForm" (ngSubmit)="employeeForm.valid && onAddEmployee()">
+        <div class="form-row">
+          <!-- Name field with required and minlength validation -->
+          <mat-form-field appearance="outline">
+            <mat-label>Full Name</mat-label>
+            <input matInput
+                   [(ngModel)]="newEmployee.name"
+                   name="name"
+                   required
+                   minlength="3"
+                   #nameField="ngModel"
+                   placeholder="Enter full name">
+            <mat-error *ngIf="nameField.hasError('required')">Name is required</mat-error>
+            <mat-error *ngIf="nameField.hasError('minlength')">Name must be at least 3 characters</mat-error>
+          </mat-form-field>
 
-                <!-- ID Column -->
-                <ng-container matColumnDef="id">
-                    <th mat-header-cell *matHeaderCellDef>ID</th>
-                    <td mat-cell *matCellDef="let employee">{{ employee.id }}</td>
-                </ng-container>
+          <!-- Email field with required and email pattern validation -->
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput
+                   [(ngModel)]="newEmployee.email"
+                   name="email"
+                   required
+                   email
+                   #emailField="ngModel"
+                   placeholder="Enter email address">
+            <mat-error *ngIf="emailField.hasError('required')">Email is required</mat-error>
+            <mat-error *ngIf="emailField.hasError('email')">Please enter a valid email</mat-error>
+          </mat-form-field>
+        </div>
 
-                <!-- Name Column -->
-                <ng-container matColumnDef="name">
-                    <th mat-header-cell *matHeaderCellDef>Name</th>
-                    <td mat-cell *matCellDef="let employee">{{ employee.name }}</td>
-                </ng-container>
+        <div class="form-row">
+          <!-- Department selection with MatSelect -->
+          <mat-form-field appearance="outline">
+            <mat-label>Department</mat-label>
+            <mat-select [(ngModel)]="newEmployee.department" name="department" required #deptField="ngModel">
+              <mat-option value="IT">IT</mat-option>
+              <mat-option value="HR">HR</mat-option>
+              <mat-option value="Marketing">Marketing</mat-option>
+              <mat-option value="Finance">Finance</mat-option>
+              <mat-option value="Operations">Operations</mat-option>
+            </mat-select>
+            <mat-error *ngIf="deptField.hasError('required')">Department is required</mat-error>
+          </mat-form-field>
 
-                <!-- Email Column -->
-                <ng-container matColumnDef="email">
-                    <th mat-header-cell *matHeaderCellDef>Email</th>
-                    <td mat-cell *matCellDef="let employee">{{ employee.email }}</td>
-                </ng-container>
+          <!-- Position field with required and minlength validation -->
+          <mat-form-field appearance="outline">
+            <mat-label>Position</mat-label>
+            <input matInput
+                   [(ngModel)]="newEmployee.position"
+                   name="position"
+                   required
+                   minlength="2"
+                   #posField="ngModel"
+                   placeholder="Enter position">
+            <mat-error *ngIf="posField.hasError('required')">Position is required</mat-error>
+            <mat-error *ngIf="posField.hasError('minlength')">Position must be at least 2 characters</mat-error>
+          </mat-form-field>
 
-                <!-- Department Column -->
-                <ng-container matColumnDef="department">
-                    <th mat-header-cell *matHeaderCellDef>Department</th>
-                    <td mat-cell *matCellDef="let employee">{{ employee.department }}</td>
-                </ng-container>
+          <!-- Join Date field -->
+          <mat-form-field appearance="outline">
+            <mat-label>Join Date</mat-label>
+            <input matInput
+                   type="date"
+                   [(ngModel)]="newEmployee.joinDate"
+                   name="joinDate"
+                   required
+                   #dateField="ngModel">
+            <mat-error *ngIf="dateField.hasError('required')">Join date is required</mat-error>
+          </mat-form-field>
+        </div>
 
-                <!-- Position Column -->
-                <ng-container matColumnDef="position">
-                    <th mat-header-cell *matHeaderCellDef>Position</th>
-                    <td mat-cell *matCellDef="let employee">{{ employee.position }}</td>
-                </ng-container>
+        <div class="button-group">
+          <button mat-raised-button color="primary" type="submit" [disabled]="!employeeForm.valid">
+            <mat-icon>save</mat-icon> Save Employee
+          </button>
+          <button mat-raised-button type="button" (click)="toggleAddForm()">Cancel</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
 
-                <!-- Join Date Column -->
-                <ng-container matColumnDef="joinDate">
-                    <th mat-header-cell *matHeaderCellDef>Join Date</th>
-                    <td mat-cell *matCellDef="let employee">{{ employee.joinDate | date }}</td>
-                </ng-container>
+  <!-- ============================================
+       DEPARTMENT FILTER - Uses Custom EmployeeFilterPipe
+       Filters employee table by selected department
+       ============================================ -->
+  <mat-card class="filter-card">
+    <mat-card-content>
+      <div class="filter-row">
+        <mat-form-field appearance="outline" class="filter-field">
+          <mat-label>Filter by Department</mat-label>
+          <mat-select [(value)]="selectedDepartment" (selectionChange)="applyFilter()">
+            <mat-option *ngFor="let dept of departments" [value]="dept">
+              {{ dept }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <span class="employee-count">Showing {{ filteredEmployees.length }} of {{ employees.length }} employees</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
 
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-        </mat-card-content>
-    </mat-card>
+  <!-- ============================================
+       EMPLOYEE TABLE - MatTable with Material UI
+       Includes action buttons for view/delete
+       Uses built-in DatePipe and UpperCasePipe
+       ============================================ -->
+  <mat-card>
+    <mat-card-content>
+      <table mat-table [dataSource]="filteredEmployees" class="employee-table">
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let employee">{{ employee.id }}</td>
+        </ng-container>
+
+        <!-- Name Column - Uses UpperCasePipe -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let employee">
+            <a [routerLink]="['/employees', employee.id]" class="employee-link">
+              {{ employee.name }}
+            </a>
+          </td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let employee">{{ employee.email }}</td>
+        </ng-container>
+
+        <!-- Department Column - Uses UpperCasePipe -->
+        <ng-container matColumnDef="department">
+          <th mat-header-cell *matHeaderCellDef>Department</th>
+          <td mat-cell *matCellDef="let employee">{{ employee.department | uppercase }}</td>
+        </ng-container>
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef>Position</th>
+          <td mat-cell *matCellDef="let employee">{{ employee.position }}</td>
+        </ng-container>
+
+        <!-- Join Date Column - Uses built-in DatePipe -->
+        <ng-container matColumnDef="joinDate">
+          <th mat-header-cell *matHeaderCellDef>Join Date</th>
+          <td mat-cell *matCellDef="let employee">{{ employee.joinDate | date:'mediumDate' }}</td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let employee">
+            <button mat-icon-button color="primary" [routerLink]="['/employees', employee.id]" matTooltip="View Details">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteEmployee(employee.id)" matTooltip="Delete Employee">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
 </div>

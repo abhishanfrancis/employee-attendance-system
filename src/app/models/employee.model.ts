@@ -1,40 +1,26 @@
 // src/app/models/employee.model.ts
+// Employee model - Core employee data structure used across the application
 
 export interface Employee {
-    id: number;
-    name: string;
-    email: string;
-    department: string;
-    position: string;
-    joinDate: Date;
+  id: number;
+  name: string;
+  email: string;
+  department: string;
+  position: string;
+  joinDate: string; // ISO date string for JSON Server compatibility
 }
 
-export interface AttendanceRecord {
-    id: number;
-    employeeId: number;
-    date: Date;
-    status: 'Present' | 'Absent' | 'Half-Day' | 'Late';
-    checkIn?: string;
-    checkOut?: string;
-    notes?: string;
-}
+// Re-export other models for backward compatibility
+export type { AttendanceRecord } from './attendance.model';
+export type { LeaveRequest } from './leave.model';
 
-export interface LeaveRequest {
-    id: number;
-    employeeId: number;
-    employeeName: string;
-    leaveType: 'Sick' | 'Casual' | 'Vacation' | 'Personal';
-    startDate: Date;
-    endDate: Date;
-    reason: string;
-    status: 'Pending' | 'Approved' | 'Rejected';
-    appliedDate: Date;
-}
-
+/**
+ * DashboardStats - Aggregated statistics displayed on the dashboard
+ */
 export interface DashboardStats {
-    totalEmployees: number;
-    presentToday: number;
-    absentToday: number;
-    pendingLeaveRequests: number;
-    approvedLeaves: number;
+  totalEmployees: number;
+  presentToday: number;
+  absentToday: number;
+  pendingLeaveRequests: number;
+  approvedLeaves: number;
 }

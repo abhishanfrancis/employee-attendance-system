@@ -1,78 +1,62 @@
 // src/app/services/employee.service.ts
+// EmployeeService - Manages all employee CRUD operations via HTTP
+// Uses Angular Dependency Injection (providedIn: 'root' = singleton)
 
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, BehaviorSubject, tap } from 'rxjs';
 import { Employee } from '../models/employee.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root' // Singleton service available application-wide via DI
 })
 export class EmployeeService {
-  private employees: Employee[] = [
-    {
-      id: 1,
-      name: 'John Doe',
-      email: 'john.doe@company.com',
-      department: 'IT',
-      position: 'Software Developer',
-      joinDate: new Date('2023-01-15')
-    },
-    {
-      id: 2,
-      name: 'Jane Smith',
-      email: 'jane.smith@company.com',
-      department: 'HR',
-      position: 'HR Manager',
-      joinDate: new Date('2022-06-20')
-    },
-    {
-      id: 3,
-      name: 'Mike Johnson',
-      email: 'mike.johnson@company.com',
-      department: 'IT',
-      position: 'Backend Developer',
-      joinDate: new Date('2023-03-10')
-    },
-    {
-      id: 4,
-      name: 'Sarah Williams',
-      email: 'sarah.williams@company.com',
-      department: 'Marketing',
-      position: 'Marketing Executive',
-      joinDate: new Date('2023-05-01')
-    }
-  ];
+  // Base URL for JSON Server API
+  private apiUrl = 'http://localhost:3000/employees';
 
-  constructor() { }
+  // BehaviorSubject to share employee data across components reactively
+  private employeesSubject = new BehaviorSubject<Employee[]>([]);
+  public employees$ = this.employeesSubject.asObservable();
 
+  constructor(private http: HttpClient) { }
+
+  /**
+   * GET all employees from the API
+   * Updates the shared BehaviorSubject so subscribers get the latest data
+   */
   getEmployees(): Observable<Employee[]> {
-    return of(this.employees);
+    return this.http.get<Employee[]>(this.apiUrl).pipe(
+      tap(employees => this.employeesSubject.next(employees))
+    );
   }
 
-  getEmployeeById(id: number): Observable<Employee | undefined> {
-    return of(this.employees.find(emp => emp.id === id));
+  /**
+   * GET a single employee by ID
+   * Used in employee detail view (/employees/:id)
+   */
+  getEmployeeById(id: number): Observable<Employee> {
+    return this.http.get<Employee>(`${this.apiUrl}/${id}`);
   }
 
-  addEmployee(employee: Employee): Observable<Employee> {
-    employee.id = Math.max(...this.employees.map(e => e.id), 0) + 1;
-    this.employees.push(employee);
-    return of(employee);
+  /**
+   * POST a new employee
+   * JSON Server auto-generates the id
+   */
+  addEmployee(employee: Omit<Employee, 'id'>): Observable<Employee> {
+    return this.http.post<Employee>(this.apiUrl, employee);
   }
 
+  /**
+   * PUT - Update an existing employee
+   */
   updateEmployee(employee: Employee): Observable<Employee> {
-    const index = this.employees.findIndex(e => e.id === employee.id);
-    if (index !== -1) {
-      this.employees[index] = employee;
-    }
-    return of(employee);
+    return this.http.put<Employee>(`${this.apiUrl}/${employee.id}`, employee);
   }
 
-  deleteEmployee(id: number): Observable<boolean> {
-    const index = this.employees.findIndex(e => e.id === id);
-    if (index !== -1) {
-      this.employees.splice(index, 1);
-      return of(true);
-    }
-    return of(false);
+  /**
+   * DELETE an employee by ID
+   */
+  deleteEmployee(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

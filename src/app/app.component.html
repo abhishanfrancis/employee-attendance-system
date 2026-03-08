@@ -1,23 +1,51 @@
 <!-- src/app/app.component.html -->
+<!-- Root Layout: Navigation Toolbar + Sidebar (MatSidenav) + Content Area -->
 
-<mat-toolbar color="primary">
-  <button mat-icon-button (click)="toggleSidenav()">
+<!-- Top Navigation Bar -->
+<mat-toolbar color="primary" class="app-toolbar">
+  <button mat-icon-button (click)="toggleSidenav()" matTooltip="Toggle Sidebar">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>{{ title }}</span>
+  <span class="app-title">{{ title }}</span>
+  <span class="toolbar-spacer"></span>
+
+  <!-- HR Mode Toggle - Controls route guard access -->
+  <div class="hr-toggle">
+    <mat-icon [class.active]="isHR">admin_panel_settings</mat-icon>
+    <mat-slide-toggle
+      [(ngModel)]="isHR"
+      (change)="toggleHRMode()"
+      matTooltip="Toggle HR Admin Mode (enables Leave Approval access)">
+      HR Mode
+    </mat-slide-toggle>
+  </div>
 </mat-toolbar>
 
-<mat-sidenav-container>
-  <mat-sidenav mode="side" [opened]="sidenavOpened">
+<!-- Sidebar + Content Container -->
+<mat-sidenav-container class="sidenav-container">
+  <!-- MatSidenav - Side navigation panel -->
+  <mat-sidenav mode="side" [opened]="sidenavOpened" class="app-sidenav">
     <mat-nav-list>
-      <mat-list-item *ngFor="let item of menuItems" [routerLink]="item.route" routerLinkActive="active-link">
+      <mat-list-item
+        *ngFor="let item of menuItems"
+        [routerLink]="item.route"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }">
         <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
         <span matListItemTitle>{{ item.label }}</span>
+        <!-- HR badge indicator -->
+        <span *ngIf="item.hrOnly" class="hr-badge">HR</span>
       </mat-list-item>
     </mat-nav-list>
+
+    <!-- Sidebar footer with app info -->
+    <div class="sidenav-footer">
+      <small>EAS v1.0 &copy; 2026</small>
+    </div>
   </mat-sidenav>
 
-  <mat-sidenav-content>
+  <!-- Main Content Area - Router outlet renders matched component -->
+  <mat-sidenav-content class="main-content">
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
