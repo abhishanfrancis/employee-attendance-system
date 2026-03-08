@@ -12,6 +12,12 @@ A modern, responsive web application built with **Angular 18** and **TypeScript*
 - **Leave Approval (HR)** — Protected by `hrGuard` route guard; approve/reject via PATCH requests
 - **HR Mode Toggle** — Slide toggle in toolbar stores preference in `localStorage`; guard reads it at navigation time
 
+### Screenshot
+![Screenshot](preview.gif)
+
+### Preview
+[Click Here](https://employee-attendance-system-ochre.vercel.app/)
+
 ## Technologies Used
 
 | Layer | Technology |
